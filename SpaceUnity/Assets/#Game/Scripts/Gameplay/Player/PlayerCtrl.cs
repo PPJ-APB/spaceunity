@@ -11,6 +11,10 @@ namespace apbcs
 
         [SerializeField] private float m_rotationSpeed = 100;
         [SerializeField] private float m_translateSpeed = 40;
+        [SerializeField] private GameObject m_gun1;
+        [SerializeField] private GameObject m_gun2;
+        [SerializeField] private Bullet m_bulletPrefab;
+
         //Mover o player com rotacao (A-D) e translacao (W-S)
         private void Awake()
         {
@@ -36,11 +40,17 @@ namespace apbcs
         {
             transform.Rotate(new Vector3(0, 0, -_rotationInput * Time.deltaTime * m_rotationSpeed));
         }
+        void Shoot()
+        {
+            Bullet bullet1 = Instantiate(m_bulletPrefab, m_gun1.transform.position, transform.rotation);
+            Bullet bullet2 = Instantiate(m_bulletPrefab, m_gun2.transform.position, transform.rotation);
+        }
         void GetInput()
         {
             float rotationInput = Input.GetAxis(k_rotationAxis);
             float translationInput = Input.GetAxis(k_translationAxis);
 
+            if (Input.GetKeyDown(KeyCode.Space)) Shoot();
             RotateShip(rotationInput);
             TranslateShip(translationInput);
         }
